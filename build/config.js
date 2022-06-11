@@ -12,7 +12,7 @@ export const rules = [
     exclude: ["**/_*", "**/_*/**/*"],
     createTask: (pathname) => {
       const srcPath = path.resolve(srcDir, pathname);
-      const outPath = path.resolve(outDir, pathname);
+      const outPath = path.resolve(outDir, pathname).replace(/\.pug$/, ".html");
       return new PugTask({ srcDir, srcPath, outPath });
     },
   },
@@ -22,7 +22,7 @@ export const rules = [
     exclude: ["**/_*", "**/_*/**/*"],
     createTask: (pathname) => {
       const srcPath = path.resolve(srcDir, pathname);
-      const outPath = path.resolve(outDir, pathname);
+      const outPath = path.resolve(outDir, pathname).replace(/\.scss$/, ".css");
       return new ScssTask({ srcDir, srcPath, outPath });
     },
   },
