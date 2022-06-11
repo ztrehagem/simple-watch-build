@@ -1,5 +1,5 @@
 {
-  "name": "watch-build",
+  "name": "simple-watch-build",
   "type": "module",
   "scripts": {
     "build": "node build/build.js",
