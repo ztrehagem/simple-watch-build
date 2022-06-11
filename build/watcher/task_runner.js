@@ -1,4 +1,4 @@
-import { logWarn } from "../log.js";
+import { logWarn } from "../utils/log.js";
 
 export class TaskRunner {
   #it = new TaskIterator();

@@ -1,4 +1,4 @@
-import { Builder } from "./builder.js";
+import { Builder } from "./builder/builder.js";
 import { srcDir, rules } from "./config.js";
 
 const builder = new Builder({ baseDir: srcDir, rules });

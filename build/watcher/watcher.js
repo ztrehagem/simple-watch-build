@@ -2,7 +2,7 @@ import * as chokidar from "chokidar";
 import anymatch from "anymatch";
 import { TaskRunner } from "./task_runner.js";
 import { DependencyMap } from "./dependency_map.js";
-import { log } from "../log.js";
+import { log } from "../utils/log.js";
 
 export class Watcher {
   #baseDir;

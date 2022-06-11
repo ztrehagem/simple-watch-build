@@ -2,7 +2,7 @@ import * as path from "node:path";
 import * as fs from "node:fs/promises";
 import { processPug } from "../processors/pug.js";
 import { Task } from "./task.js";
-import { log, logError } from "../log.js";
+import { log, logError } from "../utils/log.js";
 
 export class PugTask extends Task {
   /**

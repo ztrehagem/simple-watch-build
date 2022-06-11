@@ -3,7 +3,7 @@ import * as fs from "node:fs/promises";
 import { processSass } from "../processors/sass.js";
 import { processPostcss } from "../processors/postcss.js";
 import { Task } from "./task.js";
-import { log, logError } from "../log.js";
+import { log, logError } from "../utils/log.js";
 
 export class ScssTask extends Task {
   /**

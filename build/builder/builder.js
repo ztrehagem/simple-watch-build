@@ -1,5 +1,5 @@
-import { logError } from "./log.js";
-import { glob } from "./utils.js";
+import { logError } from "../utils/log.js";
+import { glob } from "../utils/glob.js";
 
 export class Builder {
   #baseDir;
