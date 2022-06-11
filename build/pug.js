@@ -1,29 +1,24 @@
 import * as path from "node:path";
-import * as fs from "node:fs/promises";
-import pug from "pug";
 import { glob } from "./utils.js";
+import { PugTask } from "./tasks/pug.js";
 
 (async () => {
-  const baseDir = path.resolve("src");
+  const srcDir = path.resolve("src");
   const outDir = path.resolve("dist");
-  const entries = await glob(["**/*.pug", "!**/_*"], { cwd: baseDir });
+  const entries = await glob(["**/*.pug", "!**/_*"], { cwd: srcDir });
 
   const results = await Promise.allSettled(
     entries.map(async (entry) => {
-      const srcPath = path.resolve(baseDir, entry);
-      const outPath = path.resolve(outDir, entry).replace(/\.pug$/, ".html");
-
-      const rendered = pug.renderFile(srcPath);
-
       try {
-        await fs.mkdir(path.dirname(outPath), { recursive: true });
-        await fs.writeFile(outPath, rendered);
+        const srcPath = path.resolve(srcDir, entry);
+        const outPath = path.resolve(outDir, entry).replace(/\.pug$/, ".html");
+
+        const task = new PugTask({ srcDir, srcPath, outPath });
+        await task.run();
       } catch (error) {
         console.error(error);
         throw error;
       }
-
-      console.log(`Wrote ${path.relative(process.cwd(), outPath)}`);
     }),
   );
 
