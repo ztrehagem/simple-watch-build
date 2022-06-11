@@ -17,20 +17,25 @@ export class ScssTask {
   }
 
   async run() {
-    const src = (await fs.readFile(this.srcPath)).toString();
+    try {
+      const src = (await fs.readFile(this.srcPath)).toString();
 
-    const scssCompiled = await processSass(src, {
-      loadPaths: [this.srcDir],
-    });
+      const scssCompiled = await processSass(src, {
+        loadPaths: [this.srcDir],
+      });
 
-    const postcssProcessed = await processPostcss(scssCompiled.code, {
-      srcPath: this.srcPath,
-      map: scssCompiled.map,
-    });
+      const postcssProcessed = await processPostcss(scssCompiled.code, {
+        srcPath: this.srcPath,
+        map: scssCompiled.map,
+      });
 
-    await fs.mkdir(path.dirname(this.outPath), { recursive: true });
-    await fs.writeFile(this.outPath, postcssProcessed.code);
+      await fs.mkdir(path.dirname(this.outPath), { recursive: true });
+      await fs.writeFile(this.outPath, postcssProcessed.code);
 
-    console.log(`Wrote ${path.relative(process.cwd(), this.outPath)}`);
+      console.log(`Wrote ${path.relative(process.cwd(), this.outPath)}`);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 }

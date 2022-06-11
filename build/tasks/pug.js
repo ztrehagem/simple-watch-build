@@ -16,15 +16,20 @@ export class PugTask {
   }
 
   async run() {
-    const src = (await fs.readFile(this.srcPath)).toString();
+    try {
+      const src = (await fs.readFile(this.srcPath)).toString();
 
-    const pugRendered = processPug(src, {
-      baseDir: this.srcDir,
-    });
+      const pugRendered = processPug(src, {
+        baseDir: this.srcDir,
+      });
 
-    await fs.mkdir(path.dirname(this.outPath), { recursive: true });
-    await fs.writeFile(this.outPath, pugRendered.code);
+      await fs.mkdir(path.dirname(this.outPath), { recursive: true });
+      await fs.writeFile(this.outPath, pugRendered.code);
 
-    console.log(`Wrote ${path.relative(process.cwd(), this.outPath)}`);
+      console.log(`Wrote ${path.relative(process.cwd(), this.outPath)}`);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 }

@@ -6,20 +6,14 @@ const srcDir = path.resolve("src");
 const outDir = path.resolve("dist");
 const entries = await glob(["**/*.scss", "!**/_*"], { cwd: srcDir });
 
-const results = await Promise.allSettled(
-  entries.map(async (entry) => {
-    try {
-      const srcPath = path.resolve(srcDir, entry);
-      const outPath = path.resolve(outDir, entry).replace(/\.scss$/, ".css");
+const tasks = entries.map((entry) => {
+  const srcPath = path.resolve(srcDir, entry);
+  const outPath = path.resolve(outDir, entry).replace(/\.scss$/, ".css");
 
-      const task = new ScssTask({ srcDir, srcPath, outPath });
-      await task.run();
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  })
-);
+  return new ScssTask({ srcDir, srcPath, outPath });
+});
+
+const results = await Promise.allSettled(tasks.map((task) => task.run()));
 
 const resolved = results.filter((result) => result.status == "fulfilled");
 const rejected = results.filter((result) => result.status == "rejected");
