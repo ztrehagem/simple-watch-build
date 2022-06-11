@@ -6,7 +6,7 @@ import { processPostcss } from "../processors/postcss.js";
 import { Task } from "./task.js";
 import { log, logError } from "../utils/log.js";
 
-export class ScssTask extends Task {
+export class SassTask extends Task {
   /**
    * @param {object} options
    * @param {string} options.srcDir
@@ -24,13 +24,13 @@ export class ScssTask extends Task {
     try {
       const src = (await fs.readFile(this.srcPath)).toString();
 
-      const scssCompiled = await processSass(src, {
+      const sassCompiled = await processSass(src, {
         loadPaths: [path.dirname(this.srcPath), this.srcDir],
       });
 
-      const postcssProcessed = await processPostcss(scssCompiled.code, {
+      const postcssProcessed = await processPostcss(sassCompiled.code, {
         srcPath: this.srcPath,
-        map: scssCompiled.map,
+        map: sassCompiled.map,
       });
 
       await fs.mkdir(path.dirname(this.outPath), { recursive: true });
@@ -38,7 +38,7 @@ export class ScssTask extends Task {
 
       log(`${chalk.green.bold("out")} ${path.relative(process.cwd(), this.outPath)}`);
 
-      const dependencies = scssCompiled.dependencies.map((url) =>
+      const dependencies = sassCompiled.dependencies.map((url) =>
         path.relative(this.srcDir, url.pathname)
       );
       this.setDependencies(dependencies);
