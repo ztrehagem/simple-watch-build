@@ -1,3 +1,9 @@
+@import "./include.scss";
+
+html {
+  font-size: $font-size;
+}
+
 body {
   grid-template: "a b" 1fr 1fr;
   grid-gap: 20px;

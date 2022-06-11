@@ -21,7 +21,7 @@ export class ScssTask {
       const src = (await fs.readFile(this.srcPath)).toString();
 
       const scssCompiled = await processSass(src, {
-        loadPaths: [this.srcDir],
+        loadPaths: [path.dirname(this.srcPath), this.srcDir],
       });
 
       const postcssProcessed = await processPostcss(scssCompiled.code, {

@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {},
   "dependencies": {
+    "anymatch": "^3.1.2",
     "autoprefixer": "^10.4.7",
     "chokidar": "^3.5.3",
     "postcss": "^8.4.14",
