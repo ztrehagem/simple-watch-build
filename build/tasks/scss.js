@@ -1,5 +1,6 @@
 import * as path from "node:path";
 import * as fs from "node:fs/promises";
+import chalk from "chalk";
 import { processSass } from "../processors/sass.js";
 import { processPostcss } from "../processors/postcss.js";
 import { Task } from "./task.js";
@@ -35,7 +36,7 @@ export class ScssTask extends Task {
       await fs.mkdir(path.dirname(this.outPath), { recursive: true });
       await fs.writeFile(this.outPath, postcssProcessed.code);
 
-      log(`out ${path.relative(process.cwd(), this.outPath)}`);
+      log(`${chalk.green.bold("out")} ${path.relative(process.cwd(), this.outPath)}`);
 
       const dependencies = scssCompiled.dependencies.map((url) =>
         path.relative(this.srcDir, url.pathname)

@@ -1,5 +1,6 @@
 import * as chokidar from "chokidar";
 import anymatch from "anymatch";
+import chalk from "chalk";
 import { TaskRunner } from "./task_runner.js";
 import { DependencyMap } from "./dependency_map.js";
 import { log } from "../utils/log.js";
@@ -57,7 +58,7 @@ export class Watcher {
         anymatch(rule.include, pathname) &&
         !anymatch(rule.exclude, pathname)
       ) {
-        log(`run(${rule.name}) ${pathname}`);
+        log(`${chalk.blue.bold("run")}${chalk.dim(`(${rule.name})`)} ${pathname}`);
 
         const task = rule.createTask(pathname);
         task.setDependencies = (dependencies) => {
