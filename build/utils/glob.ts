@@ -1,19 +1,16 @@
 import * as chokidar from "chokidar";
 
-/**
- * @param {string | string[]} patterns Glob patterns to pass chokidar
- * @param {object} options
- * @param {string} [options.cwd] base directory path for glob patterns
- * @returns {Promise<string[]>} matched paths
- */
-export const glob = async (patterns, options = {}) => {
+export interface GlobOptions {
+  cwd?: string
+}
+
+export const glob = async (patterns: string | string[], options: GlobOptions = {}): Promise<string[]> => {
   const watcher = chokidar.watch(patterns, {
     cwd: options.cwd,
     persistent: false
   })
 
-  /** @type {string[]} */
-  const matches = []
+  const matches: string[] = []
 
   watcher.on('add', (path, stats) => {
     matches.push(path)

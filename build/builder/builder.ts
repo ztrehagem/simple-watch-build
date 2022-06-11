@@ -1,16 +1,22 @@
 import { logError } from "../utils/log.js";
 import { glob } from "../utils/glob.js";
+import { Rule } from "../types/rule.js";
+
+export interface BuilderOptions {
+  baseDir: string;
+  rules: readonly Rule[];
+}
 
 export class Builder {
-  #baseDir;
-  #rules;
+  readonly #baseDir: string;
+  readonly #rules: readonly Rule[];
 
-  constructor({ baseDir, rules }) {
-    this.#baseDir = baseDir;
-    this.#rules = rules;
+  constructor(options: BuilderOptions) {
+    this.#baseDir = options.baseDir;
+    this.#rules = options.rules;
   }
 
-  async run() {
+  async run(): Promise<void> {
     const tasks = await Promise.all(
       this.#rules.map(async (rule) => {
         const exclude = rule.exclude.map((pattern) => `!${pattern}`);

@@ -1,22 +1,26 @@
 import * as chokidar from "chokidar";
-import anymatch from "anymatch";
-import chalk from "chalk";
+import { default as anymatch } from "anymatch";
 import { TaskRunner } from "./task_runner.js";
 import { DependencyMap } from "./dependency_map.js";
 import { log } from "../utils/log.js";
+import { Rule } from "../types/rule.js";
+const { default: chalk } = await import("chalk");
+
+export interface WatcherOptions {
+  baseDir: string;
+  rules: readonly Rule[];
+}
 
 export class Watcher {
-  #baseDir;
-  #rules;
-  /** @type {chokidar.FSWatcher?} */
-  #watcher;
-  #taskRunner = new TaskRunner();
-  #depMap = new DependencyMap();
+  readonly #baseDir: string;
+  readonly #rules: readonly Rule[];
+  readonly #taskRunner = new TaskRunner();
+  readonly #depMap = new DependencyMap<string, string>();
+  #watcher?: chokidar.FSWatcher;
 
-  constructor({ baseDir, rules }) {
-    this.#baseDir = baseDir;
-    this.#rules = rules;
-    this.#watcher = null;
+  constructor(options: WatcherOptions) {
+    this.#baseDir = options.baseDir;
+    this.#rules = options.rules;
   }
 
   launch() {
@@ -49,10 +53,7 @@ export class Watcher {
     });
   }
 
-  /**
-   * @param {string} pathname
-   */
-  #runRules(pathname) {
+  #runRules(pathname: string): void {
     for (const rule of this.#rules) {
       if (
         anymatch(rule.include, pathname) &&

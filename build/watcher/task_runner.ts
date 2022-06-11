@@ -1,19 +1,20 @@
+import { Task } from "../tasks/task.js";
 import { logWarn } from "../utils/log.js";
 
 export class TaskRunner {
-  #it = new TaskIterator();
+  readonly #it = new TaskIterator();
 
-  offer(task) {
+  offer(task: Task): void {
     this.#it.push(task);
   }
 
-  launch() {
+  launch(): void {
     void this.#start().then(() => {
       logWarn("TaskRunner terminated.");
     });
   }
 
-  async #start() {
+  async #start(): Promise<void> {
     for await (const task of this.#it) {
       await task.run().catch(() => {
         /* Ignore rejection to continue running tasks */
@@ -24,30 +25,32 @@ export class TaskRunner {
 
 // TODO: 並列化
 class TaskIterator {
-  #queue = [];
-  #eventHub = new EventTarget();
+  readonly #queue: Task[] = [];
+  readonly #eventHub = new EventTarget();
 
-  push(task) {
+  push(task: Task): void {
     this.#queue.push(task);
     const event = new Event("pushed");
     this.#eventHub.dispatchEvent(event);
   }
 
-  async #poll() {
-    if (this.#queue.length) {
-      return this.#queue.shift();
+  async #poll(): Promise<Task> {
+    const top = this.#queue.shift();
+
+    if (top) {
+      return top;
     }
 
     return await new Promise((resolve) => {
       this.#eventHub.addEventListener(
         "pushed",
-        () => resolve(this.#queue.shift()),
+        () => resolve(this.#queue.shift()!),
         { once: true }
       );
     });
   }
 
-  async *[Symbol.asyncIterator]() {
+  async *[Symbol.asyncIterator](): AsyncGenerator<Task, void, void> {
     while (true) {
       yield await this.#poll();
     }

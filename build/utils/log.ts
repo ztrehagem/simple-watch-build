@@ -1,25 +1,16 @@
-import chalk from "chalk";
+const { default: chalk } = await import("chalk");
 
 const now = () => new Date().toLocaleTimeString();
 const time = () => chalk.dim(`[${now()}]`);
 
-/**
- * @param {*} subject
- */
-export const log = (subject) => {
+export const log = (subject: unknown) => {
   console.log(`${time()} ${subject}`);
 }
 
-/**
- * @param {*} subject
- */
-export const logWarn = (subject) => {
+export const logWarn = (subject: unknown) => {
   console.warn(`${time()} ${chalk.bgYellow.bold(" WARN ")} ${subject}`);
 }
 
-/**
- * @param {*} subject
- */
-export const logError = (subject) => {
+export const logError = (subject: unknown) => {
   console.error(`${time()} ${chalk.bgRed.bold(" ERROR ")} ${subject}`);
 }

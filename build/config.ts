@@ -1,11 +1,12 @@
 import * as path from "node:path";
 import { PugTask } from "./tasks/pug.js";
 import { SassTask } from "./tasks/sass.js";
+import { Rule } from "./types/rule.js";
 
 export const srcDir = path.resolve("src");
 export const outDir = path.resolve("dist");
 
-export const rules = [
+export const rules: readonly Rule[] = [
   {
     name: "pug",
     include: ["**/*.pug"],
