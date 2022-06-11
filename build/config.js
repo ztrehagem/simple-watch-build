@@ -1,6 +1,6 @@
 import * as path from "node:path";
 import { PugTask } from "./tasks/pug.js";
-import { SassTask } from "./tasks/scss.js";
+import { SassTask } from "./tasks/sass.js";
 
 export const srcDir = path.resolve("src");
 export const outDir = path.resolve("dist");
