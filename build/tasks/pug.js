@@ -1,8 +1,9 @@
 import * as path from "node:path";
 import * as fs from "node:fs/promises";
 import { processPug } from "../processors/pug.js";
+import { Task } from "./task.js";
 
-export class PugTask {
+export class PugTask extends Task {
   /**
    * @param {object} options
    * @param {string} options.srcDir
@@ -10,6 +11,7 @@ export class PugTask {
    * @param {string} options.outPath
    */
   constructor({ srcDir, srcPath, outPath }) {
+    super();
     this.srcDir = srcDir;
     this.srcPath = srcPath;
     this.outPath = outPath;
@@ -29,9 +31,10 @@ export class PugTask {
 
       console.log(`Wrote ${path.relative(process.cwd(), this.outPath)}`);
 
-      return {
-        dependencies: pugRendered.dependencies
-      }
+      const dependencies = pugRendered.dependencies.map((absPath) =>
+        path.relative(this.srcDir, absPath)
+      );
+      this.setDependencies(dependencies);
     } catch (error) {
       console.error(error);
       throw error;
