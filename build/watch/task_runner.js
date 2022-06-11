@@ -6,16 +6,16 @@ export class TaskRunner {
   }
 
   launch() {
-    void this.#start()
-      .catch(() => {
-        /* ignore rejection */
-      })
-      .then(() => console.warn("TaskRunner terminated."));
+    void this.#start().then(() => {
+      console.warn("TaskRunner terminated.");
+    });
   }
 
   async #start() {
     for await (const task of this.#it) {
-      await task.run();
+      await task.run().catch(() => {
+        /* Ignore rejection to continue running tasks */
+      });
     }
   }
 }

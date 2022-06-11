@@ -36,6 +36,13 @@ export class Watcher {
           });
           break;
         }
+
+        case "unlink": {
+          this.#depMap.getSources(pathname)?.forEach((source) => {
+            this.#runRules(source);
+          });
+          break;
+        }
       }
     });
   }
