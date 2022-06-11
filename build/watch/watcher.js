@@ -2,6 +2,7 @@ import * as chokidar from "chokidar";
 import anymatch from "anymatch";
 import { TaskRunner } from "./task_runner.js";
 import { DependencyMap } from "./dependency_map.js";
+import { log } from "../log.js";
 
 export class Watcher {
   #baseDir;
@@ -56,11 +57,13 @@ export class Watcher {
         anymatch(rule.include, pathname) &&
         !anymatch(rule.exclude, pathname)
       ) {
-        console.log(`[${rule.name}] ${pathname}`);
+        log(`run(${rule.name}) ${pathname}`);
+
         const task = rule.createTask(pathname);
         task.setDependencies = (dependencies) => {
           this.#depMap.set(pathname, dependencies);
         };
+
         this.#taskRunner.offer(task);
         break;
       }

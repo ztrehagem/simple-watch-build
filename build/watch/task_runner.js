@@ -1,3 +1,5 @@
+import { logWarn } from "../log.js";
+
 export class TaskRunner {
   #it = new TaskIterator();
 
@@ -7,7 +9,7 @@ export class TaskRunner {
 
   launch() {
     void this.#start().then(() => {
-      console.warn("TaskRunner terminated.");
+      logWarn("TaskRunner terminated.");
     });
   }
 

@@ -2,6 +2,7 @@ import * as path from "node:path";
 import * as fs from "node:fs/promises";
 import { processPug } from "../processors/pug.js";
 import { Task } from "./task.js";
+import { log, logError } from "../log.js";
 
 export class PugTask extends Task {
   /**
@@ -29,14 +30,14 @@ export class PugTask extends Task {
       await fs.mkdir(path.dirname(this.outPath), { recursive: true });
       await fs.writeFile(this.outPath, pugRendered.code);
 
-      console.log(`Wrote ${path.relative(process.cwd(), this.outPath)}`);
+      log(`out ${path.relative(process.cwd(), this.outPath)}`);
 
       const dependencies = pugRendered.dependencies.map((absPath) =>
         path.relative(this.srcDir, absPath)
       );
       this.setDependencies(dependencies);
     } catch (error) {
-      console.error(error);
+      logError(error);
       throw error;
     }
   }
