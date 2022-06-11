@@ -20,6 +20,7 @@ export class PugTask {
       const src = (await fs.readFile(this.srcPath)).toString();
 
       const pugRendered = processPug(src, {
+        filename: this.srcPath,
         baseDir: this.srcDir,
       });
 
@@ -27,6 +28,10 @@ export class PugTask {
       await fs.writeFile(this.outPath, pugRendered.code);
 
       console.log(`Wrote ${path.relative(process.cwd(), this.outPath)}`);
+
+      return {
+        dependencies: pugRendered.dependencies
+      }
     } catch (error) {
       console.error(error);
       throw error;
