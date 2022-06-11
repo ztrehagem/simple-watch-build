@@ -1,11 +1,11 @@
-const path = require("node:path");
-const fs = require("node:fs/promises");
-const pug = require("pug");
-const { glob } = require("./utils");
+import * as path from "node:path";
+import * as fs from "node:fs/promises";
+import pug from "pug";
+import { glob } from "./utils.js";
 
 (async () => {
-  const baseDir = path.resolve(__dirname, "../src");
-  const outDir = path.resolve(__dirname, "../dist");
+  const baseDir = path.resolve("src");
+  const outDir = path.resolve("dist");
   const entries = await glob(["**/*.pug", "!**/_*"], { cwd: baseDir });
 
   const results = await Promise.allSettled(

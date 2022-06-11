@@ -1,4 +1,4 @@
-const chokidar = require('chokidar')
+import * as chokidar from "chokidar";
 
 /**
  * @param {string | string[]} patterns Glob patterns to pass chokidar
@@ -6,7 +6,7 @@ const chokidar = require('chokidar')
  * @param {string} [options.cwd] base directory path for glob patterns
  * @returns {Promise<string[]>} matched paths
  */
-const glob = async (patterns, options = {}) => {
+export const glob = async (patterns, options = {}) => {
   const watcher = chokidar.watch(patterns, {
     cwd: options.cwd,
     persistent: false
@@ -23,8 +23,4 @@ const glob = async (patterns, options = {}) => {
     watcher.on('ready', () => resolve(matches))
     watcher.on('error', (error) => reject(error))
   })
-}
-
-module.exports = {
-  glob
 }

@@ -1,13 +1,13 @@
-const path = require("node:path");
-const fs = require("node:fs/promises");
-const sass = require("sass");
-const { default: postcss } = require("postcss");
-const autoprefixer = require("autoprefixer");
-const { glob } = require("./utils");
+import * as path from "node:path";
+import * as fs from "node:fs/promises";
+import sass from "sass";
+import postcss from "postcss";
+import autoprefixer from "autoprefixer";
+import { glob } from "./utils.js";
 
 (async () => {
-  const baseDir = path.resolve(__dirname, "../src");
-  const outDir = path.resolve(__dirname, "../dist");
+  const baseDir = path.resolve("src");
+  const outDir = path.resolve("dist");
   const entries = await glob(["**/*.scss", "!**/_*"], { cwd: baseDir });
 
   const results = await Promise.allSettled(

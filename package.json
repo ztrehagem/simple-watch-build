@@ -1,6 +1,6 @@
 {
   "name": "watch-build",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {},
   "dependencies": {
     "autoprefixer": "^10.4.7",
