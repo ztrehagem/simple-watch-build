@@ -32,7 +32,7 @@ export class Watcher {
 
     this.#taskRunner.launch();
 
-    this.#watcher.on("all", (eventName, pathname, stats) => {
+    this.#watcher.on("all", (eventName, pathname) => {
       switch (eventName) {
         case "add":
         case "change": {

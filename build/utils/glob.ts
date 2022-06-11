@@ -12,7 +12,7 @@ export const glob = async (patterns: string | string[], options: GlobOptions = {
 
   const matches: string[] = []
 
-  watcher.on('add', (path, stats) => {
+  watcher.on('add', (path) => {
     matches.push(path)
   })
 

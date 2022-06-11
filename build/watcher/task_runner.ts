@@ -44,6 +44,7 @@ class TaskIterator {
     return await new Promise((resolve) => {
       this.#eventHub.addEventListener(
         "pushed",
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         () => resolve(this.#queue.shift()!),
         { once: true }
       );
