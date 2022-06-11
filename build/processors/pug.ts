@@ -1,8 +1,8 @@
 import pug from "pug";
 
 export interface ProcessPugOptions {
-  filename?: string
-  baseDir?: string
+  filename?: string;
+  baseDir?: string;
 }
 
 export interface ProcessPugResult {
@@ -10,13 +10,19 @@ export interface ProcessPugResult {
   dependencies: string[];
 }
 
-export const processPug = (code: string, options: ProcessPugOptions = {}): ProcessPugResult => {
+export const processPug = (
+  code: string,
+  options: ProcessPugOptions = {}
+): ProcessPugResult => {
   const result = pug.compileClientWithDependenciesTracked(code, {
     filename: options.filename,
     basedir: options.baseDir,
   });
 
-  const renderFunction = new Function("locals", `${result.body}return template(locals);`);
+  const renderFunction = new Function(
+    "locals",
+    `${result.body}return template(locals);`
+  );
 
   const html = renderFunction();
 

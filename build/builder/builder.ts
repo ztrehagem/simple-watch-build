@@ -30,7 +30,9 @@ export class Builder {
       })
     );
 
-    const results = await Promise.allSettled(tasks.flat().map((task) => task.run()));
+    const results = await Promise.allSettled(
+      tasks.flat().map((task) => task.run())
+    );
 
     const failures = results.filter((result) => result.status == "rejected");
 

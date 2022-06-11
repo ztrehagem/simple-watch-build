@@ -23,7 +23,9 @@ export const rules: readonly Rule[] = [
     exclude: ["**/_*", "**/_*/**/*"],
     createTask: (pathname) => {
       const srcPath = path.resolve(srcDir, pathname);
-      const outPath = path.resolve(outDir, pathname).replace(/\.s[ac]ss$/, ".css");
+      const outPath = path
+        .resolve(outDir, pathname)
+        .replace(/\.s[ac]ss$/, ".css");
       return new SassTask({ srcDir, srcPath, outPath });
     },
   },

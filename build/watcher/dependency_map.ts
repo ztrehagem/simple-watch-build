@@ -10,7 +10,7 @@ export class DependencyMap<Source, Target> {
   }
 
   getSources(dep: Target): ReadonlySet<Source> | undefined {
-    return this.#reverseMap.get(dep)
+    return this.#reverseMap.get(dep);
   }
 }
 
@@ -40,8 +40,8 @@ class OneWayDependencyMap<Source, Target> {
   }
 
   link(source: Source, target: Target): void {
-    const set = this.#map.get(source) ?? new Set()
-    set.add(target)
+    const set = this.#map.get(source) ?? new Set();
+    set.add(target);
     this.#map.set(source, set);
   }
 }

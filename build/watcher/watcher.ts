@@ -59,7 +59,9 @@ export class Watcher {
         anymatch(rule.include, pathname) &&
         !anymatch(rule.exclude, pathname)
       ) {
-        log(`${chalk.blue.bold("run")}${chalk.dim(`(${rule.name})`)} ${pathname}`);
+        log(
+          `${chalk.blue.bold("run")}${chalk.dim(`(${rule.name})`)} ${pathname}`
+        );
 
         const task = rule.createTask(pathname);
         task.setDependencies = (dependencies) => {

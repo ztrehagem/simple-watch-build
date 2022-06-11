@@ -1,10 +1,10 @@
-import { Task } from "../tasks/task.js"
+import { Task } from "../tasks/task.js";
 
 export interface Rule {
-  name: string
+  name: string;
   /** glob string array */
-  include: string[]
+  include: string[];
   /** glob string array */
-  exclude: string[]
-  createTask: (pathname: string) => Task
+  exclude: string[];
+  createTask: (pathname: string) => Task;
 }
