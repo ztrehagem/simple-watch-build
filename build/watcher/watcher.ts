@@ -23,7 +23,7 @@ export class Watcher {
     this.#rules = options.rules;
   }
 
-  launch() {
+  launch(): void {
     if (this.#watcher) return;
 
     this.#watcher = chokidar.watch(["**/*"], {

@@ -1,6 +1,7 @@
 import * as path from "node:path";
 import { PugTask } from "./tasks/pug.js";
 import { SassTask } from "./tasks/sass.js";
+import { Task } from "./tasks/task.js";
 import { Rule } from "./types/rule.js";
 
 export const srcDir = path.resolve("src");
@@ -11,7 +12,7 @@ export const rules: readonly Rule[] = [
     name: "pug",
     include: ["**/*.pug"],
     exclude: ["**/_*", "**/_*/**/*"],
-    createTask: (pathname) => {
+    createTask: (pathname: string): Task => {
       const srcPath = path.resolve(srcDir, pathname);
       const outPath = path.resolve(outDir, pathname).replace(/\.pug$/, ".html");
       return new PugTask({ srcDir, srcPath, outPath });
@@ -21,7 +22,7 @@ export const rules: readonly Rule[] = [
     name: "sass",
     include: ["**/*.s[ac]ss"],
     exclude: ["**/_*", "**/_*/**/*"],
-    createTask: (pathname) => {
+    createTask: (pathname: string): Task => {
       const srcPath = path.resolve(srcDir, pathname);
       const outPath = path
         .resolve(outDir, pathname)
