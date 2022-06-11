@@ -1,0 +1,6 @@
+body {
+  grid-template: "a b" 1fr 1fr;
+  grid-gap: 20px;
+  position: absolute;
+  inset: 0;
+}
