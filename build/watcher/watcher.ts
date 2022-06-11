@@ -44,6 +44,7 @@ export class Watcher {
         }
 
         case "unlink": {
+          this.#depMap.set(pathname, []);
           this.#depMap.getSources(pathname)?.forEach((source) => {
             this.#runRules(source);
           });
@@ -64,7 +65,7 @@ export class Watcher {
         );
 
         const task = rule.createTask(pathname);
-        task.setDependencies = (dependencies) => {
+        task.reportDependencies = (dependencies) => {
           this.#depMap.set(pathname, dependencies);
         };
 

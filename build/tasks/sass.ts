@@ -12,13 +12,14 @@ export interface SassTaskOptions {
   outPath: string;
 }
 
-export class SassTask extends Task {
+export class SassTask implements Task {
   readonly #srcDir: string;
   readonly #srcPath: string;
   readonly #outPath: string;
 
+  reportDependencies: Task["reportDependencies"];
+
   constructor(options: SassTaskOptions) {
-    super();
     this.#srcDir = options.srcDir;
     this.#srcPath = options.srcPath;
     this.#outPath = options.outPath;
@@ -50,7 +51,7 @@ export class SassTask extends Task {
       const dependencies = sassCompiled.dependencies.map((url) =>
         path.relative(this.#srcDir, url.pathname)
       );
-      this.setDependencies(dependencies);
+      this.reportDependencies?.(dependencies);
     } catch (error) {
       logError(error);
       throw error;

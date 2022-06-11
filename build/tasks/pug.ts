@@ -11,13 +11,14 @@ export interface PugTaskOptions {
   outPath: string;
 }
 
-export class PugTask extends Task {
+export class PugTask implements Task {
   readonly #srcDir: string;
   readonly #srcPath: string;
   readonly #outPath: string;
 
+  reportDependencies: Task["reportDependencies"];
+
   constructor(options: PugTaskOptions) {
-    super();
     this.#srcDir = options.srcDir;
     this.#srcPath = options.srcPath;
     this.#outPath = options.outPath;
@@ -45,7 +46,7 @@ export class PugTask extends Task {
       const dependencies = pugRendered.dependencies.map((absPath) =>
         path.relative(this.#srcDir, absPath)
       );
-      this.setDependencies(dependencies);
+      this.reportDependencies?.(dependencies);
     } catch (error) {
       logError(error);
       throw error;
