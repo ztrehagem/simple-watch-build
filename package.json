@@ -10,7 +10,9 @@
     "lint:prettier": "prettier --check --ignore-path=.gitignore .",
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "npm run lint:eslint -- --fix",
-    "fix:prettier": "npm run lint:prettier -- --write"
+    "fix:prettier": "npm run lint:prettier -- --write",
+    "prepare": "npm run fix-sass-dts",
+    "fix-sass-dts": "echo 'export * from \"./types/index\";' > node_modules/sass/sass.default.dart.d.ts"
   },
   "dependencies": {
     "@types/pug": "^2.0.6",
