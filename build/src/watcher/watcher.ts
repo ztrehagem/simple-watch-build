@@ -1,6 +1,5 @@
 import * as chokidar from "chokidar";
 import { default as anymatch } from "anymatch";
-import { TaskRunner } from "./task_runner.js";
 import { DependencyMap } from "./dependency_map.js";
 import { log } from "../utils/log.js";
 import { Rule } from "../types/rule.js";
@@ -14,7 +13,6 @@ export interface WatcherOptions {
 export class Watcher {
   readonly #baseDir: string;
   readonly #rules: readonly Rule[];
-  readonly #taskRunner = new TaskRunner();
   readonly #depMap = new DependencyMap<string, string>();
   #watcher?: chokidar.FSWatcher;
 
@@ -29,8 +27,6 @@ export class Watcher {
     this.#watcher = chokidar.watch(["**/*"], {
       cwd: this.#baseDir,
     });
-
-    this.#taskRunner.launch();
 
     this.#watcher.on("all", (eventName, pathname) => {
       switch (eventName) {
@@ -69,7 +65,9 @@ export class Watcher {
           this.#depMap.set(pathname, dependencies);
         };
 
-        this.#taskRunner.offer(task);
+        void task.run().catch(() => {
+          /* Ignore rejection to continue running tasks */
+        });
         break;
       }
     }
