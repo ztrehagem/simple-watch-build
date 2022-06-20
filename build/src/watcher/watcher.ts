@@ -61,13 +61,15 @@ export class Watcher {
         );
 
         const task = rule.createTask(pathname);
-        task.reportDependencies = (dependencies) => {
-          this.#depMap.set(pathname, dependencies);
-        };
 
-        void task.run().catch(() => {
-          /* Ignore rejection to continue running tasks */
-        });
+        void task
+          .run()
+          .then((result) => {
+            this.#depMap.set(pathname, result.dependencies);
+          })
+          .catch(() => {
+            /* Ignore rejection to continue running tasks */
+          });
         break;
       }
     }

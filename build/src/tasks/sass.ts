@@ -2,7 +2,7 @@ import * as path from "node:path";
 import * as fs from "node:fs/promises";
 import { processSass } from "../processors/sass.js";
 import { processPostcss } from "../processors/postcss.js";
-import { Task } from "./task.js";
+import { Task, TaskResult } from "./task.js";
 import { log, logError } from "../utils/log.js";
 const { default: chalk } = await import("chalk");
 
@@ -17,15 +17,13 @@ export class SassTask implements Task {
   readonly #srcPath: string;
   readonly #outPath: string;
 
-  reportDependencies: Task["reportDependencies"];
-
   constructor(options: SassTaskOptions) {
     this.#srcDir = options.srcDir;
     this.#srcPath = options.srcPath;
     this.#outPath = options.outPath;
   }
 
-  async run(): Promise<void> {
+  async run(): Promise<TaskResult> {
     try {
       const src = (await fs.readFile(this.#srcPath)).toString();
 
@@ -51,7 +49,8 @@ export class SassTask implements Task {
       const dependencies = sassCompiled.dependencies.map((url) =>
         path.relative(this.#srcDir, url.pathname)
       );
-      this.reportDependencies?.(dependencies);
+
+      return { dependencies };
     } catch (error) {
       logError(error);
       throw error;

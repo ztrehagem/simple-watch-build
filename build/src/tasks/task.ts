@@ -1,4 +1,7 @@
+export interface TaskResult {
+  dependencies: readonly string[];
+}
+
 export interface Task {
-  reportDependencies?: (dependencies: readonly string[]) => void;
-  run(): Promise<void>;
+  run(): Promise<TaskResult>;
 }
