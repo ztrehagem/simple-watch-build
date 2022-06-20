@@ -2,7 +2,7 @@ import sass from "sass";
 import { RawSourceMap } from "source-map-js";
 
 export interface ProcessSassOptions {
-  loadPaths?: readonly string[];
+  loadPaths?: string[];
 }
 
 export interface ProcessSassResult {
