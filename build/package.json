@@ -1,0 +1,20 @@
+{
+  "name": "build",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf out"
+  },
+  "dependencies": {
+    "@types/node": "^18.0.0",
+    "@types/pug": "^2.0.6",
+    "anymatch": "^3.1.2",
+    "autoprefixer": "^10.4.7",
+    "chalk": "^5.0.1",
+    "chokidar": "^3.5.3",
+    "postcss": "^8.4.14",
+    "pug": "^3.0.2",
+    "sass": "^1.52.3",
+    "typescript": "^4.7.4"
+  }
+}

@@ -1,31 +1,24 @@
 {
   "name": "simple-watch-build",
   "type": "module",
+  "workspaces": [
+    "build"
+  ],
   "scripts": {
-    "build": "tsc && node lib/build/build.js",
-    "watch": "tsc && node lib/build/watch.js",
+    "build": "node build/out/build.js",
+    "watch": "node build/out/watch.js",
     "clean": "rm -rf dist",
     "lint": "npm run lint:eslint && npm run lint:prettier",
-    "lint:eslint": "eslint build",
+    "lint:eslint": "eslint --ignore-path=.gitignore .",
     "lint:prettier": "prettier --check --ignore-path=.gitignore .",
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "fix:prettier": "npm run lint:prettier -- --write",
-    "prepare": "npm run fix-sass-dts",
-    "fix-sass-dts": "echo 'export * from \"./types/index\";' > node_modules/sass/sass.default.dart.d.ts"
+    "prepare": "npm run prepare:build && npm run prepare:sass",
+    "prepare:sass": "echo 'export * from \"./types/index\";' > node_modules/sass/sass.default.dart.d.ts",
+    "prepare:build": "npm run -w build build"
   },
-  "dependencies": {
-    "@types/pug": "^2.0.6",
-    "anymatch": "^3.1.2",
-    "autoprefixer": "^10.4.7",
-    "chalk": "^5.0.1",
-    "chokidar": "^3.5.3",
-    "postcss": "^8.4.14",
-    "pug": "^3.0.2",
-    "sass": "^1.52.3",
-    "ts-node": "^10.8.1",
-    "typescript": "^4.7.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",

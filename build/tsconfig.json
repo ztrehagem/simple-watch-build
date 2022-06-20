@@ -10,8 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "rootDir": ".",
-    "outDir": "lib"
+    "rootDir": "src",
+    "outDir": "out"
   },
-  "include": ["build"]
+  "include": ["src"]
 }
