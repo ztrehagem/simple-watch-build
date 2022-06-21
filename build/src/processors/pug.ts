@@ -19,10 +19,11 @@ export const processPug = (
     basedir: options.baseDir,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-implied-eval
   const renderFunction = new Function(
     "locals",
     `${result.body}return template(locals);`
-  );
+  ) as () => string;
 
   const html = renderFunction();
 
