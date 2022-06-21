@@ -3,7 +3,6 @@ import { default as anymatch } from "anymatch";
 import { DependencyMap } from "./dependency_map.js";
 import { log } from "../utils/log.js";
 import { Rule } from "../types/rule.js";
-import { Task } from "../tasks/task.js";
 const { default: chalk } = await import("chalk");
 
 export interface WatcherOptions {
@@ -57,21 +56,17 @@ export class Watcher {
         anymatch(rule.include, pathname) &&
         !anymatch(rule.exclude, pathname)
       ) {
-        this.#runRule(pathname, rule);
+        void this.#runRule(pathname, rule);
         break;
       }
     }
   }
 
-  #runRule(pathname: string, rule: Rule): void {
+  async #runRule(pathname: string, rule: Rule): Promise<void> {
     log(`${chalk.blue.bold("run")}${chalk.dim(`(${rule.name})`)} ${pathname}`);
 
     const task = rule.createTask(pathname);
 
-    void this.#runTask(pathname, task);
-  }
-
-  async #runTask(pathname: string, task: Task): Promise<void> {
     try {
       const result = await task.run();
       this.#depMap.set(pathname, result.dependencies);
