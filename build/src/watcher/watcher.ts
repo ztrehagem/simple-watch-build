@@ -24,29 +24,26 @@ export class Watcher {
   launch(): void {
     if (this.#watcher) return;
 
-    this.#watcher = chokidar.watch(["**/*"], {
+    this.#watcher = chokidar.watch(["."], {
       cwd: this.#baseDir,
     });
 
-    this.#watcher.on("all", (eventName, pathname) => {
-      switch (eventName) {
-        case "add":
-        case "change": {
-          this.#runRules(pathname);
-          this.#depMap.getSources(pathname)?.forEach((source) => {
-            this.#runRules(source);
-          });
-          break;
-        }
+    this.#watcher.on("add", (pathname) => this.#onUpdate(pathname));
+    this.#watcher.on("change", (pathname) => this.#onUpdate(pathname));
+    this.#watcher.on("unlink", (pathname) => this.#onDelete(pathname));
+  }
 
-        case "unlink": {
-          this.#depMap.set(pathname, []);
-          this.#depMap.getSources(pathname)?.forEach((source) => {
-            this.#runRules(source);
-          });
-          break;
-        }
-      }
+  #onUpdate(pathname: string): void {
+    this.#runRules(pathname);
+    this.#depMap.getSources(pathname)?.forEach((source) => {
+      this.#runRules(source);
+    });
+  }
+
+  #onDelete(pathname: string): void {
+    this.#depMap.set(pathname, []);
+    this.#depMap.getSources(pathname)?.forEach((source) => {
+      this.#runRules(source);
     });
   }
 
